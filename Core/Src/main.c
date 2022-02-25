@@ -27,6 +27,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
+#include "stdint.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,14 +100,27 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  const uint8_t LSM303AGR_ACC_ADDR =  0x19;
+  const uint8_t LSM303DLHC_ACC_WHOAMI_ADDR = 0x0F;
+  uint8_t id = 0x00;
+  const uint8_t LSM303AGR_ACC_WHOAMI = 0x33;
+  HAL_I2C_Mem_Read(&hi2c1, LSM303AGR_ACC_ADDR<<1, LSM303DLHC_ACC_WHOAMI_ADDR, 1, &id, 1, HAL_MAX_DELAY);
+  if(id == LSM303AGR_ACC_WHOAMI) {
+    printf("Accelerometer interface established, Who_am_i: 0x%x\n", id);
+  } else {
+    printf("Error interfacing with accelerometer\n");
+  }
+  
+  
   while (1)
   {
     /* USER CODE END WHILE */
     // int val = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
     // HAL_GPIO_WritePin(LD8x_GPIO_Port, LD8x_Pin, val);
 
-    printf("Hello World!\n");
-    HAL_Delay(1000);
+    // printf("Hello World!\n");
+    // HAL_Delay(1000);
 
 
     /* USER CODE BEGIN 3 */
