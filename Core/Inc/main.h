@@ -97,6 +97,8 @@ void Error_Handler(void);
 #define LD8x_GPIO_Port GPIOE
 #define LD6_Pin GPIO_PIN_15
 #define LD6_GPIO_Port GPIOE
+#define SPI2_EN_Pin GPIO_PIN_12
+#define SPI2_EN_GPIO_Port GPIOB
 #define DM_Pin GPIO_PIN_11
 #define DM_GPIO_Port GPIOA
 #define DP_Pin GPIO_PIN_12
