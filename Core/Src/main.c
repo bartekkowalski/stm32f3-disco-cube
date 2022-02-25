@@ -101,8 +101,13 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    int val = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
-    HAL_GPIO_WritePin(LD8x_GPIO_Port, LD8x_Pin, val);
+    // int val = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
+    // HAL_GPIO_WritePin(LD8x_GPIO_Port, LD8x_Pin, val);
+
+    printf("Hello World!\n");
+    HAL_Delay(1000);
+
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -156,7 +161,35 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief Send a char through Uart1.
+ * This function is required for printf debugging to work.
+ * 
+ * @param ch 
+ * @return int 
+ */
+int __io_putchar(int ch)
+{
+  HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0x00FF);
+  return ch;
+}
 
+/**
+ * @brief Send a string to Uart1.
+ * This function is required for printf debuggin to work.
+ * 
+ * @param ptr 
+ * @param len 
+ * @return int 
+ */
+int _write(__attribute__((unused)) int file, char *ptr, int len)
+{
+  int DataIdx;
+  for (DataIdx = 0; DataIdx < len; DataIdx++) {
+    __io_putchar( *ptr++ );
+  }
+  return len;
+}
 /* USER CODE END 4 */
 
 /**
