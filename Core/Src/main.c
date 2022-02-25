@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "i2c.h"
 #include "spi.h"
 #include "usart.h"
@@ -94,6 +95,7 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   MX_USB_PCD_Init();
+  MX_DMA_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
@@ -118,21 +120,13 @@ int main(void)
     printf("Error interfacing with accelerometer\n");
   }
   
+
+  HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_RESET);
+  HAL_SPI_Transmit_DMA(&hspi2, spi_buf, sizeof(spi_buf));
   
   while (1)
   {
     /* USER CODE END WHILE */
-    // int val = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
-    // HAL_GPIO_WritePin(LD8x_GPIO_Port, LD8x_Pin, val);
-
-    // printf("Hello World!\n");
-    // HAL_Delay(1000);
-
-    // SPI Example
-    HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_RESET);
-    HAL_SPI_Transmit(&hspi2, spi_buf, sizeof(spi_buf), HAL_MAX_DELAY);
-    HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_SET);
-    HAL_Delay(200);
 
     /* USER CODE BEGIN 3 */
   }
@@ -191,10 +185,11 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 /**
  * @brief Send a char through Uart1.
- * This function is required for printf debugging to work.
  * 
- * @param ch 
- * @return int 
+ * @note This function is required for printf debugging to work.
+ * 
+ * @param ch Character to send.
+ * @return int Character that was sent.
  */
 int __io_putchar(int ch)
 {
@@ -204,11 +199,12 @@ int __io_putchar(int ch)
 
 /**
  * @brief Send a string to Uart1.
- * This function is required for printf debuggin to work.
  * 
- * @param ptr 
- * @param len 
- * @return int 
+ * @note This function is required for printf debuggin to work.
+ * 
+ * @param ptr String buffer.
+ * @param len Length of string buffer.
+ * @return int Length of string sent.
  */
 int _write(__attribute__((unused)) int file, char *ptr, int len)
 {
@@ -218,6 +214,21 @@ int _write(__attribute__((unused)) int file, char *ptr, int len)
   }
   return len;
 }
+
+/**
+ * @brief SPI Transmit DMA Callback function.
+ * 
+ * @param hspi pointer to a SPI_HandleTypeDef structure that contains
+ *             the configuration information for SPI module.
+ * @retval None
+ */
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+  HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_SET);
+  printf("DMA SPI2 send complete!\n");
+}
+
+
 /* USER CODE END 4 */
 
 /**
