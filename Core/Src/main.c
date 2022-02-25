@@ -101,8 +101,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_GPIO_TogglePin(LD8x_GPIO_Port, LD8x_Pin);
-    HAL_Delay(200);
+    int val = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
+    HAL_GPIO_WritePin(LD8x_GPIO_Port, LD8x_Pin, val);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
