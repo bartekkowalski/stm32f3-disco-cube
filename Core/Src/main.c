@@ -102,6 +102,11 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
+  // Set up SPI2 EN Pin, set up spi2 buffer
+  HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_SET);
+  uint8_t spi_buf[] = "Testing 123...";
+
+  // I2C Example
   const uint8_t LSM303AGR_ACC_ADDR =  0x19;
   const uint8_t LSM303DLHC_ACC_WHOAMI_ADDR = 0x0F;
   uint8_t id = 0x00;
@@ -123,6 +128,11 @@ int main(void)
     // printf("Hello World!\n");
     // HAL_Delay(1000);
 
+    // SPI Example
+    HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_RESET);
+    HAL_SPI_Transmit(&hspi2, spi_buf, sizeof(spi_buf), HAL_MAX_DELAY);
+    HAL_GPIO_WritePin(SPI2_EN_GPIO_Port, SPI2_EN_Pin, GPIO_PIN_SET);
+    HAL_Delay(200);
 
     /* USER CODE BEGIN 3 */
   }
