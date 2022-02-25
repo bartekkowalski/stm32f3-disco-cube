@@ -1,2 +1,5 @@
 .vscode/
 .mxproject
+build/
+openocd.cfg
+STM32Make.make
