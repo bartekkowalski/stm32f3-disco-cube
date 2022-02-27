@@ -1,0 +1,3 @@
+[submodule "modules/lpm013m126x"]
+	path = modules/lpm013m126x
+	url = git@github.com:bartekkowalski/lpm013m126x.git
